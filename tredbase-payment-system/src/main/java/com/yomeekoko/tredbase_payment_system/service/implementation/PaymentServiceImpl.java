@@ -1,5 +1,6 @@
 package com.yomeekoko.tredbase_payment_system.service.implementation;
 
+import com.yomeekoko.tredbase_payment_system.persistence.dto.PaymentRequest;
 import com.yomeekoko.tredbase_payment_system.persistence.models.Account;
 import com.yomeekoko.tredbase_payment_system.persistence.models.Parent;
 import com.yomeekoko.tredbase_payment_system.persistence.models.Payment;
@@ -44,16 +45,16 @@ public class PaymentServiceImpl implements PaymentService {
     private RateService rateService;
 
     @Transactional
-    public PaymentResponse processPayment(Long parentId, Long studentId, Double paymentAmount) {
+    public PaymentResponse processPayment(PaymentRequest paymentRequest) {
 
         Double dynamicRate = rateService.getCurrentRate();
 
-        Parent parent = parentRepository.findById(parentId)
+        Parent parent = parentRepository.findById(paymentRequest.getParentId())
                 .orElseThrow(() -> new RuntimeException("Parent not found"));
-        Student student = studentRepository.findById(studentId)
+        Student student = studentRepository.findById(paymentRequest.getStudentId())
                 .orElseThrow(() -> new RuntimeException("Student not found"));
 
-        Double adjustedAmount = paymentAmount * (1 + dynamicRate);
+        Double adjustedAmount = paymentRequest.getPaymentAmount() * (1 + dynamicRate);
 
         Account parentAccount = parent.getAccount();
         parentAccount.setBalance(parentAccount.getBalance() - adjustedAmount);

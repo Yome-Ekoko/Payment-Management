@@ -17,7 +17,7 @@ public class ParentController {
 
     private final ParentService parentService;
 
-    @PostMapping
+    @PostMapping("/add")
     @PreAuthorize("permitAll")
     public ResponseEntity<ParentResponse> addParent(@RequestBody ParentRequest dto) {
         return ResponseEntity.ok(parentService.createParent(dto));

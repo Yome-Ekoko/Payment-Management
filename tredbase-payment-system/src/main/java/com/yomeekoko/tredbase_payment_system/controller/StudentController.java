@@ -17,7 +17,7 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    @PostMapping
+    @PostMapping("/add")
     @PreAuthorize("permitAll")
     public ResponseEntity<StudentResponse> addStudent(@RequestBody StudentRequest dto) {
         return ResponseEntity.ok(studentService.createStudent(dto));

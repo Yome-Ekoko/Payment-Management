@@ -52,7 +52,7 @@ public class HttpSecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://www.google.com"));
+        configuration.setAllowedOrigins(Arrays.asList( "http://www.google.com", ""));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type", "Accept", "Origin"));
         configuration.setAllowCredentials(true);
@@ -64,36 +64,52 @@ public class HttpSecurityConfiguration {
 
     private static void buildRequestMatchers(AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authHttp) {
         authHttp.requestMatchers("/error").permitAll();
-        authHttp.requestMatchers(HttpMethod.GET, "/products/**").permitAll();
-        authHttp.requestMatchers(HttpMethod.GET, "/category/**").permitAll();
-        authHttp.requestMatchers(HttpMethod.POST, "/customer/register").permitAll();
+        authHttp.requestMatchers(HttpMethod.GET, "/parents/**").permitAll();
+        authHttp.requestMatchers(HttpMethod.GET, "/students/**").permitAll();
+        authHttp.requestMatchers(HttpMethod.GET, "/payments/**").permitAll();
+        authHttp.requestMatchers(HttpMethod.GET, "/accounts/**").permitAll();
+        authHttp.requestMatchers(HttpMethod.GET, "/rates/**").permitAll();
         authHttp.requestMatchers(HttpMethod.POST, "/administrator/register").permitAll();
         authHttp.requestMatchers(HttpMethod.POST, "/auth/**").permitAll();
         authHttp.requestMatchers(HttpMethod.GET, "/auth/validate-token").permitAll();
 
 
-        // Products
-        authHttp.requestMatchers(HttpMethod.POST, "/products/create-product")
-                //.hasAnyRole(Role.ROLE_ADMINISTRATOR.name(), Role.ROLE_ASSISTANT_ADMINISTRATOR.name());
-                .hasAuthority(PermissionEnum.CREATE_ONE_PRODUCT.name());
-        authHttp.requestMatchers(HttpMethod.PUT, "/products/update/{productId}")
-                //.hasAnyRole(Role.ROLE_ADMINISTRATOR.name(), Role.ROLE_ASSISTANT_ADMINISTRATOR.name());
-                .hasAuthority(PermissionEnum.UPDATE_ONE_PRODUCT.name());
+        // Parents
+        authHttp.requestMatchers(HttpMethod.POST, "/parent/create-parent")
+                .hasAuthority(PermissionEnum.CREATE_ONE_PARENT.name());
 
-        authHttp.requestMatchers(HttpMethod.PUT, "/products/{productId}/disable")
-                //.hasAnyRole(Role.ROLE_ADMINISTRATOR.name(), Role.ROLE_ASSISTANT_ADMINISTRATOR.name());
-                .hasAuthority(PermissionEnum.DISABLE_ONE_PRODUCT.name());
-        authHttp.requestMatchers(HttpMethod.DELETE, "/products/delete/{productId}")
-                //.hasAnyRole(Role.ROLE_ADMINISTRATOR.name(), Role.ROLE_ASSISTANT_ADMINISTRATOR.name());
-                .hasAuthority(PermissionEnum.DELETE_ONE_PRODUCT.name());
+        /*authHttp.requestMatchers(HttpMethod.PUT, "/parent/update/{parentId}")
+                .hasAuthority(PermissionEnum.UPDATE_ONE_PARENT.name());
 
-        // Category
-        authHttp.requestMatchers(HttpMethod.POST, "/category/create-category")
-                .hasAuthority(PermissionEnum.CREATE_ONE_CATEGORIES.name());
-        authHttp.requestMatchers(HttpMethod.PUT, "/category/update/{id}")
-                .hasAuthority(PermissionEnum.UPDATE_ONE_CATEGORIES.name());
-        authHttp.requestMatchers(HttpMethod.DELETE, "/category/delete/{id}")
-                .hasAuthority(PermissionEnum.DELETE_ONE_CATEGORIES.name());
+         */
+
+        
+        authHttp.requestMatchers(HttpMethod.DELETE, "/parent/delete/{parentId}")
+                .hasAuthority(PermissionEnum.DELETE_ONE_PARENT.name());
+
+        // Student
+        authHttp.requestMatchers(HttpMethod.POST, "/student/create-student")
+                .hasAuthority(PermissionEnum.CREATE_ONE_STUDENT.name());
+
+
+        authHttp.requestMatchers(HttpMethod.DELETE, "/student/delete/{id}")
+                .hasAuthority(PermissionEnum.DELETE_ONE_STUDENT.name());
         authHttp.anyRequest().authenticated();
+
+
+//Admins
+        authHttp.requestMatchers(HttpMethod.POST, "/administrator/register")
+                .hasAuthority(PermissionEnum.ADD_ADMINISTRATORS.name());
+
+
+//Payment
+        authHttp.requestMatchers(HttpMethod.POST, "/payments/make-payment")
+                .hasAuthority(PermissionEnum.PROCESS_ALL_PAYMENT.name());
+
+//Rate
+        authHttp.requestMatchers(HttpMethod.POST, "/rates/add")
+                .hasAuthority(PermissionEnum.PROCESS_ALL_PAYMENT.name());
+
+
     }
 }

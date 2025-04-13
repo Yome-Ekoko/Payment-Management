@@ -1,5 +1,6 @@
 package com.yomeekoko.tredbase_payment_system.controller;
 
+import com.yomeekoko.tredbase_payment_system.persistence.dto.PaymentRequest;
 import com.yomeekoko.tredbase_payment_system.persistence.models.Payment;
 import com.yomeekoko.tredbase_payment_system.service.interfaces.PaymentService;
 import com.yomeekoko.tredbase_payment_system.utils.dto.PaymentResponse;
@@ -17,14 +18,11 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @PostMapping
-    @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
+    @PostMapping("/make-payment")
+    @PreAuthorize("hasAuthority('PROCESS_ALL_PAYMENT')")
 
-    public ResponseEntity<PaymentResponse> makePayment(@RequestParam Long parentId,
-                                               @RequestParam Long studentId,
-                                               @RequestParam Double paymentAmount
-                                               ) {
-        PaymentResponse payment = paymentService.processPayment(parentId, studentId, paymentAmount);
+    public ResponseEntity<PaymentResponse> makePayment(@RequestParam PaymentRequest paymentRequest) {
+        PaymentResponse payment = paymentService.processPayment(paymentRequest);
         return ResponseEntity.ok(payment);
     }
 

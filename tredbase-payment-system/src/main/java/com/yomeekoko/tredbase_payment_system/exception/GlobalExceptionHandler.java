@@ -25,8 +25,8 @@ public class GlobalExceptionHandler {
         ApiErrorResponse apiError = new ApiErrorResponse(errorMessage, 400, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleProductNotFoundException(ProductNotFoundException e) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleProductNotFoundException(ResourceNotFoundException e) {
         ApiErrorResponse apiError = new ApiErrorResponse(e.getMessage(), 404, e.getStatus(), e.getTimestamp());
         return ResponseEntity.status(e.getStatus()).body(apiError);
 

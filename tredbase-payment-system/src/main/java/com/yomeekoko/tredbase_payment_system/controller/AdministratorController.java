@@ -27,7 +27,7 @@ public class AdministratorController {
     private final AuthenticationService authenticationService;
     @Operation(summary = "Register one administrator")
     @ApiResponse(responseCode = "201", description = "Administrator created", content = {@Content(mediaType = "application/json")})
-    @PreAuthorize("permitAll")
+    @PreAuthorize("hasAuthority('ADD_ADMINISTRATORS')")
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerOneAdmin(@Valid @RequestBody RegisterUserRequest request) {
         RegisterResponse response = authenticationService.registerOneAdmin(request);

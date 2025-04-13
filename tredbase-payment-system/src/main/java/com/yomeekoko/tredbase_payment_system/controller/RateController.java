@@ -17,13 +17,13 @@ public class RateController {
 
     private final RateService rateService;
 
-    @PostMapping
-    @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
+    @PostMapping("/add")
+    @PreAuthorize("hasAuthority('ADD_RATE')")
     public ResponseEntity<RateResponse> addRate(@RequestBody RateRequest dto) {
         return ResponseEntity.ok(rateService.configureRate(dto));
     }
 
-    @GetMapping
+    @GetMapping("/get")
     @PreAuthorize("permitAll")
     public ResponseEntity<List<RateResponse>> getAllRates() {
         return ResponseEntity.ok(rateService.getAllRates());

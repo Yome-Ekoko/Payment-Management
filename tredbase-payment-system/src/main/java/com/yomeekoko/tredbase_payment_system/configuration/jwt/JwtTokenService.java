@@ -70,7 +70,6 @@ public class JwtTokenService {
         if (header == null || !header.startsWith("Bearer ")) {
             return null;
         }
-        // Obtener token
         return header.substring(7);
     }
 

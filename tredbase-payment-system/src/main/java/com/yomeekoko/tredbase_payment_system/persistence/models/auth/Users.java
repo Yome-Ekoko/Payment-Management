@@ -40,13 +40,7 @@ public class Users implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        /*
-          return role.getPermissions().stream()
-                .map(rol -> {
-                    String permission = rol.name();
-                    return new SimpleGrantedAuthority(permission);
-                }).collect(Collectors.toList());
-         */
+
 
     }
 
