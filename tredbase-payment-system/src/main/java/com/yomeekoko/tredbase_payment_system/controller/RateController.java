@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rates")
+@RequestMapping("/rates")
 @RequiredArgsConstructor
 public class RateController {
 
@@ -24,7 +24,6 @@ public class RateController {
     }
 
     @GetMapping("/get")
-    @PreAuthorize("permitAll")
     public ResponseEntity<List<RateResponse>> getAllRates() {
         return ResponseEntity.ok(rateService.getAllRates());
     }

@@ -41,6 +41,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validatePassword(RegisterUserRequest request) {
+
         if(!StringUtils.hasText(request.getPassword()) || !StringUtils.hasText(request.getRepeatedPassword())){
             throw new InvalidPasswordException(Message.PASSWORD_NOT_VALID,400, HttpStatus.BAD_REQUEST, LocalDateTime.now());
         }

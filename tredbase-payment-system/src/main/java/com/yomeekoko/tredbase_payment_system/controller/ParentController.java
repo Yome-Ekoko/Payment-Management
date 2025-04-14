@@ -11,20 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/parents")
+@RequestMapping("/parents")
 @RequiredArgsConstructor
 public class ParentController {
 
     private final ParentService parentService;
 
     @PostMapping("/add")
-    @PreAuthorize("permitAll")
     public ResponseEntity<ParentResponse> addParent(@RequestBody ParentRequest dto) {
         return ResponseEntity.ok(parentService.createParent(dto));
     }
 
     @GetMapping("/{studentId}/by-student")
-    @PreAuthorize("permitAll")
     public ResponseEntity<List<ParentResponse>> getParentsByStudentId(@PathVariable Long studentId) {
         return ResponseEntity.ok(parentService.getParentsByStudentId(studentId));
     }

@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@Tag(name = "Authentication", description = "Authentication")
+//@Tag(name = "Authentication", description = "Authentication")
 public class AuthenticationController {
     private final AuthenticationService authenticateService;
     @Operation(summary = "Validate token")
@@ -31,7 +31,7 @@ public class AuthenticationController {
         boolean isValid = authenticateService.validateToken(token);
         return ResponseEntity.ok(isValid);
     }
-    /*@Operation(summary = "Login")
+    @Operation(summary = "Login")
     @ApiResponse(responseCode = "200", description = "Login successfully",  content = {@Content(mediaType = "application/json")})
     @PreAuthorize("permitAll")
     @PostMapping("/login")
@@ -42,7 +42,7 @@ public class AuthenticationController {
     }
 
 
-     */
+
 
    /* @GetMapping("/profile")
     @PreAuthorize("hasAuthority('READ_MY_PROFILE')")

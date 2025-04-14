@@ -51,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     }
 
-   /* @Override
+    @Override
     public AuthenticateResponse login(AuthenticateRequest request) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
         authenticationManager.authenticate(authentication);
@@ -62,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new AuthenticateResponse(jwt);
     }
 
-    */
+
 
     private void saverUserToken(Users users, String jwt) {
         Token token = new Token();

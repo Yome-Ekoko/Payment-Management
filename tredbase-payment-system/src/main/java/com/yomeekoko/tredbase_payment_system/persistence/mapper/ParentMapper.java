@@ -8,6 +8,7 @@ import com.yomeekoko.tredbase_payment_system.utils.dto.ParentResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +30,7 @@ public class ParentMapper {
         // If the request contains studentIds, fetch students from the database and link them
         if (request.getStudentIds() != null && !request.getStudentIds().isEmpty()) {
             List<Student> students = studentRepository.findAllById(request.getStudentIds());
-            parent.setStudents(students); // Set the students for this parent
+            parent.setStudents(new HashSet<>(students)); // Convert List to Set
         }
 
         return parent;

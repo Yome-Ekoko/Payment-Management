@@ -28,7 +28,10 @@ public enum RoleEnum {
             )),
 
 
-    ROLE_CUSTOMER(Arrays.asList(
+    ROLE_STUDENT(Arrays.asList(
+            PermissionEnum.READ_MY_PROFILE
+    )),
+    ROLE_PARENT(Arrays.asList(
             PermissionEnum.READ_MY_PROFILE
     ));
 

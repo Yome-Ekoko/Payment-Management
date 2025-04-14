@@ -23,25 +23,41 @@ public class ParentServiceImpl  implements ParentService {
 
     @Override
     public ParentResponse createParent(ParentRequest request) {
+        // Validate student IDs before creating the parent
+        if (request.getStudentIds() == null || request.getStudentIds().isEmpty()) {
+            throw new IllegalArgumentException("Student IDs must be provided.");
+        }
+
+        List<Student> students = studentRepository.findAllById(request.getStudentIds());
+
+        // Check if all provided student IDs exist
+        if (students.size() != request.getStudentIds().size()) {
+            throw new IllegalArgumentException("One or more students do not exist.");
+        }
+
         // Convert the ParentRequest to a Parent entity
         Parent parent = parentMapper.toEntity(request);
 
         // Save the parent to the database
         parent = parentRepository.save(parent);
 
-        if (request.getStudentIds() != null && !request.getStudentIds().isEmpty()) {
-            List<Student> students = studentRepository.findAllById(request.getStudentIds());
+        for (Student student : students) {
+            // Add parent to student's list of parents
+            student.getParents().add(parent);
 
-            for (Student student : students) {
-                student.getParents().add(parent);  // Add parent to student's list of parents
-                studentRepository.save(student);   // Save the updated student
-            }
+            // Add student to parent's list of students
+            parent.getStudents().add(student);
+
+            // Save the updated student
+            studentRepository.save(student);
         }
+
+        // Save the updated parent to ensure the relationship is persisted
+        parent = parentRepository.save(parent);
 
         // Return the saved parent as a DTO
         return parentMapper.toDTO(parent);
     }
-
 
     @Override
     public List<ParentResponse> getParentsByStudentId(Long studentId) {

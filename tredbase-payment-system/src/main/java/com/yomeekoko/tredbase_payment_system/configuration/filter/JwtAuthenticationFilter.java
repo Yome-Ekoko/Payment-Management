@@ -35,7 +35,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+        String path = request.getRequestURI();
 
+        // Skip authentication for permitted endpoints
+        if (path.equals("/api/students/add") || path.startsWith("/v3/api-docs") || path.startsWith("/swagger-ui")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         String jwt = jwtTokenService.extractJwtFromRequest(request);
         if (!StringUtils.hasText(jwt)) {
             filterChain.doFilter(request, response);

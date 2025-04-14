@@ -57,6 +57,11 @@ public class PaymentServiceImpl implements PaymentService {
         Double adjustedAmount = paymentRequest.getPaymentAmount() * (1 + dynamicRate);
 
         Account parentAccount = parent.getAccount();
+
+        if (parentAccount.getBalance() < adjustedAmount) {
+            throw new RuntimeException("Insufficient balance in parent's account");
+        }
+
         parentAccount.setBalance(parentAccount.getBalance() - adjustedAmount);
         accountRepository.save(parentAccount);
 
@@ -64,21 +69,29 @@ public class PaymentServiceImpl implements PaymentService {
             for (Parent sharedParent : student.getParents()) {
                 if (!sharedParent.equals(parent)) {
                     Account sharedParentAccount = sharedParent.getAccount();
+
+                    if (sharedParentAccount.getBalance() < adjustedAmount) {
+                        throw new RuntimeException("Insufficient balance in shared parent's account: " + sharedParent.getEmail());
+                    }
+
                     sharedParentAccount.setBalance(sharedParentAccount.getBalance() - adjustedAmount);
                     accountRepository.save(sharedParentAccount);
                 }
             }
         }
 
+        // Credit student's account
         Account studentAccount = student.getAccount();
         studentAccount.setBalance(studentAccount.getBalance() + adjustedAmount);
         accountRepository.save(studentAccount);
 
+        // Save payment
         Payment payment = new Payment(null, parent, student, adjustedAmount, LocalDateTime.now(), dynamicRate);
         payment = paymentRepository.save(payment);
 
-        return paymentMapper.toDTO(payment); // Map to PaymentResponse
+        return paymentMapper.toDTO(payment);
     }
+
 
     @Override
     public PaymentResponse getPayment(Long id) {

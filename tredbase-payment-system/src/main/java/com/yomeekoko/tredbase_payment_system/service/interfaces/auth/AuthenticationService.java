@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface AuthenticationService {
     RegisterResponse registerOneAdmin(RegisterUserRequest request);
 
-   // AuthenticateResponse login(AuthenticateRequest request);
+    AuthenticateResponse login(AuthenticateRequest request);
 
     boolean validateToken(String token);
 

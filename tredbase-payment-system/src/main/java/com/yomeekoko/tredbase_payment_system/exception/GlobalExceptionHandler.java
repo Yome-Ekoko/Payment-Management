@@ -2,6 +2,7 @@ package com.yomeekoko.tredbase_payment_system.exception;
 
 import com.yomeekoko.tredbase_payment_system.utils.dto.ApiErrorResponse;
 import jakarta.validation.ConstraintViolationException;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@NoArgsConstructor
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
@@ -26,13 +28,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleProductNotFoundException(ResourceNotFoundException e) {
+    public ResponseEntity<ApiErrorResponse> handleParentNotFoundException(ResourceNotFoundException e) {
         ApiErrorResponse apiError = new ApiErrorResponse(e.getMessage(), 404, e.getStatus(), e.getTimestamp());
         return ResponseEntity.status(e.getStatus()).body(apiError);
 
     }
     @ExceptionHandler(CategoryNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleCategoryNotFoundException(CategoryNotFoundException e) {
+    public ResponseEntity<ApiErrorResponse> handleStudentNotFoundException(CategoryNotFoundException e) {
         ApiErrorResponse apiError = new ApiErrorResponse(e.getMessage(), 404, e.getStatus(), e.getTimestamp());
         return ResponseEntity.status(e.getStatus()).body(apiError);
     }
